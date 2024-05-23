@@ -1,6 +1,6 @@
-defmodule FireAlarm.Utils.ChangeTriggerTest do
+defmodule FireAlarm.Composites.ChangeTriggerTest do
   use ExUnit.Case
-  alias FireAlarm.Utils.ChangeTrigger
+  alias FireAlarm.Composites.ChangeTrigger
   alias FireAlarm.Sources.Smoke
 
   alias Strom.Composite

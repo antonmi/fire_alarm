@@ -1,4 +1,4 @@
-defmodule FireAlarm.Utils.TickAverage do
+defmodule FireAlarm.Composites.TickAverage do
   alias Strom.{Composite, Mixer, Transformer, Source, Renamer}
 
   def build(source, interval) do

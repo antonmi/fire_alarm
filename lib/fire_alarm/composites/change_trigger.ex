@@ -1,4 +1,4 @@
-defmodule FireAlarm.Utils.ChangeTrigger do
+defmodule FireAlarm.Composites.ChangeTrigger do
   alias Strom.{Composite, Mixer, Transformer, Source, Renamer}
 
   def build(stream_name, interval) do

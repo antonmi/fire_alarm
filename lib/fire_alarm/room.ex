@@ -1,6 +1,6 @@
 defmodule FireAlarm.Room do
   alias FireAlarm.Sources.{Smoke, Humidity, Temperature}
-  alias FireAlarm.Utils.{Average, ChangeTrigger}
+  alias FireAlarm.Composites.{Average, ChangeTrigger}
   alias Strom.{Composite, Transformer, Mixer}
 
   @interval 1000

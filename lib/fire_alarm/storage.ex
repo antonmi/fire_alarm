@@ -1,5 +1,5 @@
 defmodule FireAlarm.Storage do
-  alias FireAlarm.Utils.ChangeTrigger
+  alias FireAlarm.Composites.ChangeTrigger
   alias FireAlarm.Room
   alias Strom.{Composite, Transformer, Mixer}
 

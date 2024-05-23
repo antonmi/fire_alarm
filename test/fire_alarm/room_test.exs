@@ -3,7 +3,7 @@ defmodule FireAlarm.RoomTest do
   alias FireAlarm.Room
 
   alias Strom.Composite
-  alias FireAlarm.Events.{NormalTemperature, NormalHumidity, NoSmoke}
+#  alias FireAlarm.Events.{NormalTemperature, NormalHumidity, NoSmoke}
   alias FireAlarm.Events.{HighTemperature, HighHumidity, WithSmoke}
 
   @tag timeout: :infinity

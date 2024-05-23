@@ -1,6 +1,6 @@
-defmodule FireAlarm.Utils.AverageTest do
+defmodule FireAlarm.Composites.TickAverageTest do
   use ExUnit.Case
-  alias FireAlarm.Utils.TickAverage
+  alias FireAlarm.Composites.TickAverage
   alias FireAlarm.Sources.Temperature
 
   alias Strom.Composite

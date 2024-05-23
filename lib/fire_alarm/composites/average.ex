@@ -1,4 +1,4 @@
-defmodule FireAlarm.Utils.Average do
+defmodule FireAlarm.Composites.Average do
   alias Strom.Transformer
 
   def build(stream, interval, prefix) do

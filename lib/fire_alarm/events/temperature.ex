@@ -9,3 +9,9 @@ defmodule FireAlarm.Events.HighTemperature do
     List.duplicate(25, 50) ++ List.duplicate(70, 50)
   end
 end
+
+defmodule FireAlarm.Events.BrokenTemperature do
+  def events do
+    []
+  end
+end
