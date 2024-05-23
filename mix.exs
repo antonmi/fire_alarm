@@ -21,7 +21,7 @@ defmodule FireAlarm.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:strom, path: "/Users/anton.mishchukkloeckner.com/elixir/strom"}
+      {:strom, "0.8.2"}
     ]
   end
 end
