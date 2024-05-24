@@ -2,11 +2,13 @@
 
 **An example problem solved with Strom**
 
+Strom is [here](https://github.com/antonmi/Strom)
+
 ## The problem
 
 We are implementing a fire-alarm logic for a storage of goods.
 
-The storage has many rooms. Each room has 3 sensors:
+The storage has many rooms (let's say 100). Each room has 3 sensors:
 
 - Temperature sensor
 - Humidity sensor
@@ -26,6 +28,10 @@ On the storage level the logic is:
 2. If there are warnings in rooms, the `{:warning, [:room_x, :room_y]}` is produced
 3. If there are alarms in rooms, the `{:alarm, [:room_x, :room_y]}` is produced.
 4. If there are more than 3 rooms with the `:alarm` event, then the `{:siren, [:room_x, :room_y]}` event is produced.
+
+### An extra task
+Sensors may stop working. We need an additional `maintenance` stream which report malfunctions, 
+smth like `{:maintenance, {:roomx_x, [:smoke, :temperature]}}`. 
 
 And there is a priority in events, the `:siren` has the highest priority, `:ok` - the lowest.
 It means, if there is any event with the high priority, then only this event is generated.

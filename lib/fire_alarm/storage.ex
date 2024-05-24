@@ -4,11 +4,12 @@ defmodule FireAlarm.Storage do
   alias Strom.{Composite, Transformer, Mixer}
 
   @interval 1000
+  @maintenance_interval 10000
 
   def build(rooms_with_configs, output_stream) do
     rooms =
       Enum.reduce(rooms_with_configs, [], fn {room_name, configs}, acc ->
-        room = Room.build(configs, room_name)
+        room = Room.build(configs, room_name, {:maintenance, room_name})
         add_room_number = Transformer.new(room_name, &{room_name, &1})
 
         acc ++ [room, add_room_number]
@@ -43,11 +44,17 @@ defmodule FireAlarm.Storage do
 
     change_trigger = ChangeTrigger.build(output_stream, @interval)
 
+    maintenance_keys = Enum.map(Map.keys(rooms_with_configs), &{:maintenance, &1})
+    maintenance_mixer = Mixer.new(maintenance_keys, :maintenance)
+    maintenance_trigger = ChangeTrigger.build(:maintenance, @maintenance_interval)
+
     Composite.new([
       rooms,
       mixer,
       status,
-      change_trigger
+      change_trigger,
+      maintenance_mixer,
+      maintenance_trigger
     ])
   end
 

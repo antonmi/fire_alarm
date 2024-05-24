@@ -6,7 +6,7 @@ defmodule FireAlarm.StorageTest do
   alias FireAlarm.Events.{NormalTemperature, NormalHumidity, NoSmoke}
   alias FireAlarm.Events.{HighTemperature, HighHumidity, WithSmoke}
 
-  @count 100
+  @count 1000
 
   @fire_rooms Enum.reduce(1..3, %{}, fn i, acc ->
                 name = String.to_atom("room#{i}")
@@ -25,6 +25,8 @@ defmodule FireAlarm.StorageTest do
 
   @rooms @fire_rooms |> Map.merge(@ok_rooms) |> Map.merge(@fire_rooms2)
 
+  defp time_now, do: Time.truncate(Time.utc_now(), :millisecond)
+
   @tag timeout: :infinity
   test "build" do
     :observer.start()
@@ -38,8 +40,21 @@ defmodule FireAlarm.StorageTest do
 
     flow = Composite.call(%{}, composite)
 
-    flow[:status]
-    |> Stream.each(&IO.inspect(&1, label: Time.truncate(Time.utc_now(), :millisecond)))
-    |> Stream.run()
+    task1 =
+      Task.async(fn ->
+        flow[:status]
+        |> Stream.each(&IO.inspect(&1, label: inspect({time_now(), :status})))
+        |> Stream.run()
+      end)
+
+    task2 =
+      Task.async(fn ->
+        flow[:maintenance]
+        |> Stream.each(&IO.inspect(&1, label: inspect({time_now(), :maintenance})))
+        |> Stream.run()
+      end)
+
+    Task.await(task1, :infinity)
+    Task.await(task2, :infinity)
   end
 end
