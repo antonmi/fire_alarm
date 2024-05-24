@@ -1,43 +1,28 @@
 defmodule FireAlarm.Composites.ChangeTrigger do
-  alias Strom.{Composite, Mixer, Transformer, Source}
+  alias FireAlarm.Composites.TickSource
+  alias Strom.{Composite, Mixer, Transformer}
 
   def build(stream_name, interval) do
-    tick_source =
-      Source.new(
-        :ticks,
-        Stream.resource(
-          fn -> nil end,
-          fn nil ->
-            Process.sleep(interval)
-            {[:tick], nil}
-          end,
-          fn nil -> nil end
-        )
-      )
-
+    tick_source = TickSource.build(:ticks, interval)
     mixer = Mixer.new([stream_name, :ticks], stream_name, no_wait: true)
-
-    transformer =
-      Transformer.new(
-        stream_name,
-        fn event, last_event ->
-          case {event, last_event} do
-            {:tick, nil} ->
-              {[], nil}
-
-            {:tick, last_event} ->
-              {[last_event], last_event}
-
-            {event, event} ->
-              {[], event}
-
-            {event, _last_event} ->
-              {[event], event}
-          end
-        end,
-        nil
-      )
+    transformer = Transformer.new(stream_name, &handle_events/2, nil)
 
     Composite.new([tick_source, mixer, transformer])
+  end
+
+  def handle_events(event, last_event) do
+    case {event, last_event} do
+      {:tick, nil} ->
+        {[], nil}
+
+      {:tick, last_event} ->
+        {[last_event], last_event}
+
+      {event, event} ->
+        {[], event}
+
+      {event, _last_event} ->
+        {[event], event}
+    end
   end
 end

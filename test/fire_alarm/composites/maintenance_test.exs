@@ -3,7 +3,7 @@ defmodule FireAlarm.Composites.MaintenanceTest do
   alias FireAlarm.Composites.{Average, Maintenance}
   alias FireAlarm.Sources.{Temperature, Humidity, Smoke}
 
-  alias Strom.{Composite, Mixer}
+  alias Strom.Composite
 
   def build({temps, hums, smokes}) do
     temp_source = Temperature.build(temps, test: true, timeout: 10)

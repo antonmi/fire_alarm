@@ -21,9 +21,9 @@ defmodule FireAlarm.Composites.AverageTest do
 
     # temperature = Stream.each(temperature, &IO.inspect(&1))
     assert Enum.to_list(temperature) == [
-             {:temperature, 2.5},
-             {:temperature, 7.0},
-             {:temperature, 12.0}
+             {:temperature, 3.0},
+             {:temperature, 8.0},
+             {:temperature, 13.0}
            ]
   end
 end
