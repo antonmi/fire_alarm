@@ -8,26 +8,14 @@ defmodule FireAlarm.Room do
   @max_humidity 90
 
   def build({temp_mod, hum_mod, smoke_mod}, output_stream, maintenance_stream \\ false) do
-    sources = build_sources({temp_mod, hum_mod, smoke_mod})
-
-    mix_temp_and_hum = Mixer.new([:temperature, :humidity], :th_mixed)
-
-    warning = Transformer.new(:th_mixed, &check_warning/2, {0, 0})
-
-    mix_all = Mixer.new([:th_mixed, :smoke], output_stream)
-
-    alarm = Transformer.new(output_stream, &check_alarm/2, {:ok, false})
-
-    change_trigger = ChangeTrigger.build(output_stream, @interval)
-
     Composite.new([
-      sources,
+      build_sources({temp_mod, hum_mod, smoke_mod}),
       maintenance(maintenance_stream),
-      mix_temp_and_hum,
-      warning,
-      mix_all,
-      alarm,
-      change_trigger
+      Mixer.new([:temperature, :humidity], :th_mixed),
+      Transformer.new(:th_mixed, &check_warning/2, {0, 0}),
+      Mixer.new([:th_mixed, :smoke], output_stream),
+      Transformer.new(output_stream, &check_alarm/2, {:ok, false}),
+      ChangeTrigger.build(output_stream, @interval)
     ])
   end
 

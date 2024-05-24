@@ -7,19 +7,11 @@ defmodule FireAlarm.Storage do
   @maintenance_interval 10000
 
   def build(rooms_with_configs, output_stream, maintenance_stream \\ false) do
-    rooms = build_rooms(rooms_with_configs, maintenance_stream)
-
-    mixer = Mixer.new(Map.keys(rooms_with_configs), output_stream)
-
-    status = Transformer.new(:status, &status_transformer/2, {MapSet.new(), MapSet.new()})
-
-    change_trigger = ChangeTrigger.build(output_stream, @interval)
-
     Composite.new([
-      rooms,
-      mixer,
-      status,
-      change_trigger,
+      build_rooms(rooms_with_configs, maintenance_stream),
+      Mixer.new(Map.keys(rooms_with_configs), output_stream),
+      Transformer.new(:status, &status_transformer/2, {MapSet.new(), MapSet.new()}),
+      ChangeTrigger.build(output_stream, @interval),
       maintenance(Map.keys(rooms_with_configs), maintenance_stream)
     ])
   end

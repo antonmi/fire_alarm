@@ -3,11 +3,11 @@ defmodule FireAlarm.Composites.ChangeTrigger do
   alias Strom.{Composite, Mixer, Transformer}
 
   def build(stream_name, interval) do
-    tick_source = TickSource.build(:ticks, interval)
-    mixer = Mixer.new([stream_name, :ticks], stream_name, no_wait: true)
-    transformer = Transformer.new(stream_name, &handle_events/2, nil)
-
-    Composite.new([tick_source, mixer, transformer])
+    Composite.new([
+      TickSource.build(:ticks, interval),
+      Mixer.new([stream_name, :ticks], stream_name, no_wait: true),
+      Transformer.new(stream_name, &handle_events/2, nil)
+    ])
   end
 
   def handle_events(event, last_event) do

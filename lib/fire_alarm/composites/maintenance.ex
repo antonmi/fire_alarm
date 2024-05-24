@@ -3,33 +3,19 @@ defmodule FireAlarm.Composites.Maintenance do
   alias Strom.{Composite, Mixer, Splitter, Transformer}
 
   def build({temp_name, hum_name, smoke_name}, interval, output) do
-    temp_splitter = Splitter.new(temp_name, %{temp_name => & &1, temp_maintenance: & &1})
-    hum_splitter = Splitter.new(hum_name, %{hum_name => & &1, hum_maintenance: & &1})
-    smoke_splitter = Splitter.new(smoke_name, %{smoke_name => & &1, smoke_maintenance: & &1})
-
-    mix_sensors =
-      Mixer.new([:temp_maintenance, :hum_maintenance, :smoke_maintenance], :maintenance)
-
-    tick_source = TickSource.build(:ticks, interval)
-
-    mix_ticks = Mixer.new([:ticks, :maintenance], output, no_wait: true)
-
-    transformer =
+    Composite.new([
+      Splitter.new(temp_name, %{temp_name => & &1, temp_maintenance: & &1}),
+      Splitter.new(hum_name, %{hum_name => & &1, hum_maintenance: & &1}),
+      Splitter.new(smoke_name, %{smoke_name => & &1, smoke_maintenance: & &1}),
+      Mixer.new([:temp_maintenance, :hum_maintenance, :smoke_maintenance], :maintenance),
+      TickSource.build(:ticks, interval),
+      Mixer.new([:ticks, :maintenance], output, no_wait: true),
       Transformer.new(
         output,
         handle_event({temp_name, hum_name, smoke_name}),
         # {temp, hum, smoke}
         {false, false, false}
       )
-
-    Composite.new([
-      temp_splitter,
-      hum_splitter,
-      smoke_splitter,
-      mix_sensors,
-      tick_source,
-      mix_ticks,
-      transformer
     ])
   end
 
