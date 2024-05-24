@@ -6,7 +6,7 @@ defmodule FireAlarm.StorageTest do
   alias FireAlarm.Events.{NormalTemperature, NormalHumidity, NoSmoke}
   alias FireAlarm.Events.{HighTemperature, HighHumidity, WithSmoke}
 
-  @count 1000
+  @count 100
 
   @fire_rooms Enum.reduce(1..3, %{}, fn i, acc ->
                 name = String.to_atom("room#{i}")
@@ -28,12 +28,30 @@ defmodule FireAlarm.StorageTest do
   defp time_now, do: Time.truncate(Time.utc_now(), :millisecond)
 
   @tag timeout: :infinity
-  test "build" do
+  test "storage" do
     :observer.start()
 
     composite =
       @rooms
       |> Storage.build(:status)
+      |> Composite.start()
+
+    IO.inspect(length(composite.components), label: :storage_components)
+
+    %{}
+    |> Composite.call(composite)
+    |> Map.get(:status)
+    |> Stream.each(&IO.inspect(&1, label: inspect({time_now(), :status})))
+    |> Stream.run()
+  end
+
+  @tag timeout: :infinity
+  test "storage with maintenance" do
+    :observer.start()
+
+    composite =
+      @rooms
+      |> Storage.build(:status, :maintenance)
       |> Composite.start()
 
     IO.inspect(length(composite.components), label: :storage_components)

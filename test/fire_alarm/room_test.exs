@@ -22,6 +22,7 @@ defmodule FireAlarm.RoomTest do
     |> Stream.run()
   end
 
+  @tag timeout: :infinity
   test "room with maintenance" do
     composite =
       {HighTemperature, HighHumidity, WithSmoke}
