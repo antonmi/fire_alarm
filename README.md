@@ -28,9 +28,7 @@ On the storage level the logic is:
 2. If there are warnings in rooms, the `{:warning, [:room_x, :room_y]}` is produced
 3. If there are alarms in rooms, the `{:alarm, [:room_x, :room_y]}` is produced.
 4. If there are more than 3 rooms with the `:alarm` event, then the `{:siren, [:room_x, :room_y]}` event is produced.
-
-### An extra task
-Sensors may stop working. We need an additional `maintenance` stream which report malfunctions, 
+5. Extra task. Sensors may stop working. We need an additional `maintenance` stream which report malfunctions, 
 smth like `{:maintenance, {:roomx_x, [:smoke, :temperature]}}`. 
 
 And there is a priority in events, the `:siren` has the highest priority, `:ok` - the lowest.
