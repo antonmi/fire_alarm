@@ -36,7 +36,7 @@ defmodule FireAlarm.Sources.Smoke do
   alias FireAlarm.Sources
 
   @name :smoke
-  @timeout 100
+  @timeout 100 * Application.compile_env!(:fire_alarm, :time_scale)
 
   def build(events, opts \\ []) do
     timeout = div(@timeout, 2) + :rand.uniform(@timeout)
@@ -48,7 +48,7 @@ defmodule FireAlarm.Sources.Temperature do
   alias FireAlarm.Sources
 
   @name :temperature
-  @timeout 100
+  @timeout 100 * Application.compile_env!(:fire_alarm, :time_scale)
 
   def build(events, opts \\ []) do
     timeout = div(@timeout, 2) + :rand.uniform(@timeout)
@@ -60,7 +60,7 @@ defmodule FireAlarm.Sources.Humidity do
   alias FireAlarm.Sources
 
   @name :humidity
-  @timeout 100
+  @timeout 100 * Application.compile_env!(:fire_alarm, :time_scale)
 
   def build(events, opts \\ []) do
     timeout = div(@timeout, 2) + :rand.uniform(@timeout)

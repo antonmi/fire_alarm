@@ -3,8 +3,8 @@ defmodule FireAlarm.Storage do
   alias FireAlarm.Room
   alias Strom.{Composite, Transformer, Mixer}
 
-  @interval 1000
-  @maintenance_interval 10000
+  @interval 1000 * Application.compile_env!(:fire_alarm, :time_scale)
+  @maintenance_interval 10000 * Application.compile_env!(:fire_alarm, :time_scale)
 
   def build(rooms_with_configs, output_stream, maintenance_stream \\ false) do
     Composite.new([

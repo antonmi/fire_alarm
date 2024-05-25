@@ -3,7 +3,8 @@ defmodule FireAlarm.Room do
   alias FireAlarm.Composites.{Average, ChangeTrigger, Maintenance}
   alias Strom.{Composite, Transformer, Mixer}
 
-  @interval 1000
+  @interval 1000 * Application.compile_env!(:fire_alarm, :time_scale)
+  @maintenance_interval 10000 * Application.compile_env!(:fire_alarm, :time_scale)
   @max_temperature 50
   @max_humidity 90
 
@@ -77,6 +78,6 @@ defmodule FireAlarm.Room do
   defp maintenance(false), do: []
 
   defp maintenance(stream) do
-    Maintenance.build({:temperature, :humidity, :smoke}, 5000, stream)
+    Maintenance.build({:temperature, :humidity, :smoke}, @maintenance_interval, stream)
   end
 end
