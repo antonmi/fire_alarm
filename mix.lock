@@ -1,3 +1,3 @@
 %{
-  "strom": {:hex, :strom, "0.8.2", "ec350528d5b54caedf5c4aafc7f497d0a5ab3982d68d020cf15ab6cd50ae9890", [:mix], [], "hexpm", "c1137c57786dabfb9edb571f0b687d22f898985938944440892af8f54ac099c5"},
+  "strom": {:hex, :strom, "0.8.3", "a92cdcfbb11e51a6bab6884ffac5ef2b7ca21f60df051c90abd9510127d3941d", [:mix], [], "hexpm", "5f95dc4c73d1e2fb71b7a24c272379499d176a49b23663769135cba51853a64c"},
 }

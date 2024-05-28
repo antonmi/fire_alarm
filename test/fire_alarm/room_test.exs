@@ -8,6 +8,8 @@ defmodule FireAlarm.RoomTest do
 
   @tag timeout: :infinity
   test "room" do
+    :observer.start()
+
     composite =
       {HighTemperature, HighHumidity, WithSmoke}
       |> Room.build(:room1)
