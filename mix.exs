@@ -21,7 +21,8 @@ defmodule FireAlarm.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:strom, "0.8.4"}
+      {:strom, "0.8.6"},
+      {:local_cluster, "~> 1.2", only: [:test]}
     ]
   end
 end
